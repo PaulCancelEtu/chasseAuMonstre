@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Level.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">model.maze</a> &gt; <span class="el_source">Level.java</span></div><h1>Level.java</h1><pre class="source lang-java linenums">package model.maze;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+
+/**
+ * Cette énurmération est temporaire.
+ * 
+ * &lt;p&gt;Un {@code Level} encapsule la grille d'un niveau sous la forme d'un
+ * tableau bidimensionnel de {@code CellInfo}.&lt;/p&gt;
+ */
+
+<span class="nc" id="L16">public enum Level {</span>
+<span class="nc" id="L17">    LEVEL_1(LevelUtils.importLevel1()),</span>
+<span class="nc" id="L18">    LEVEL_2(LevelUtils.importLevel2()),</span>
+<span class="nc" id="L19">    LEVEL_3(LevelUtils.importLevel3());</span>
+
+    private CellInfo[][] grid;
+
+<span class="nc" id="L23">    private Level(CellInfo[][] grid) {</span>
+<span class="nc" id="L24">        this.grid = grid;</span>
+<span class="nc" id="L25">    }</span>
+
+    public int getNbRows(){
+<span class="nc" id="L28">        return this.grid.length;</span>
+    }
+
+    public int getNbCols(){
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if(this.grid == null) return 0;</span>
+<span class="nc" id="L33">        return this.grid[0].length;</span>
+    }
+
+    // public CellInfo[][] getGrid() {
+    //     return grid;
+    // }
+
+    public CellInfo getCellInfo(int row, int col){
+<span class="nc" id="L41">        return this.grid[row][col];</span>
+    }
+
+
+
+    private static class LevelUtils{
+<span class="nc" id="L47">        private static final File LEVEL_1_FILE = new File(&quot;res/level1.txt&quot;);</span>
+<span class="nc" id="L48">        private static final File LEVEL_2_FILE = new File(&quot;res/level2.txt&quot;);</span>
+<span class="nc" id="L49">        private static final File LEVEL_3_FILE = new File(&quot;res/level3.txt&quot;);</span>
+
+        private static final CellInfo[][]importLevel1(){
+<span class="nc" id="L52">            return importGrid(10, 10, LEVEL_1_FILE);</span>
+        }
+        private static final CellInfo[][]importLevel2(){
+<span class="nc" id="L55">            return importGrid(10, 10, LEVEL_2_FILE);</span>
+        }
+        private static final CellInfo[][]importLevel3(){
+<span class="nc" id="L58">            return importGrid(10, 10, LEVEL_3_FILE);</span>
+        }
+
+
+        private static CellInfo[][] importGrid(int height, int width, File file){
+<span class="nc" id="L63">            CellInfo[][] res = new CellInfo[height][width];</span>
+<span class="nc" id="L64">            try(Scanner sc = new Scanner(file)){</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">                for(int i = 0; i &lt; height; i++){</span>
+<span class="nc" id="L66">                    res[i] = importLine(width, sc.nextLine());</span>
+                }
+<span class="nc" id="L68">            }catch(FileNotFoundException e){</span>
+<span class="nc" id="L69">                e.printStackTrace();</span>
+<span class="nc" id="L70">                return res;</span>
+            }
+<span class="nc" id="L72">            return res;</span>
+        }
+
+
+        private static CellInfo[] importLine(int size, String line){
+<span class="nc" id="L77">            CellInfo[] res = new CellInfo[size];</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">            for(int i = 0; i&lt;size; i++){</span>
+<span class="nc" id="L79">                res[i] = importCell(line.charAt(i));</span>
+            }
+
+<span class="nc" id="L82">            return res;</span>
+        }
+
+        private static CellInfo importCell(char character){
+<span class="nc bnc" id="L86" title="All 5 branches missed.">            switch(character){</span>
+<span class="nc" id="L87">                case '_': return CellInfo.EMPTY;</span>
+<span class="nc" id="L88">                case '*': return CellInfo.WALL;</span>
+<span class="nc" id="L89">                case 'm': return CellInfo.MONSTER;</span>
+<span class="nc" id="L90">                case 's': return CellInfo.EXIT;</span>
+<span class="nc" id="L91">                default: return null;</span>
+            }
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

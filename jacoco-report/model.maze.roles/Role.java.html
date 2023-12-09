@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Role.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">model.maze.roles</a> &gt; <span class="el_source">Role.java</span></div><h1>Role.java</h1><pre class="source lang-java linenums">package model.maze.roles;
+
+import fr.univlille.iutinfo.cam.player.IStrategy;
+import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
+import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+import model.maze.Game;
+import model.maze.observer.IObserver;
+import model.maze.observer.Subject;
+import model.maze.util.StringBuildableSubject;
+
+/**
+ * Classe représentant un acteur dans le jeu.
+ */
+
+<span class="fc" id="L15">public abstract class Role extends StringBuildableSubject implements IObserver {</span>
+	protected IStrategy strategy;
+
+	/**
+	 * Joue en exécutant la méthode {@code play} de la stratégie attribuée.
+	 * 
+	 * @throws NoStrategyFoundException si aucune stratégie n'a été attribuée
+	 */
+	public void play() {
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">		if (this.hasStrategy()) {</span>
+<span class="nc" id="L25">			ICoordinate coord = this.strategy.play();</span>
+<span class="nc" id="L26">			this.play(coord.getRow(), coord.getCol());</span>
+<span class="nc" id="L27">		} else {</span>
+<span class="fc" id="L28">			throw new NoStrategyFoundException();</span>
+		}
+<span class="nc" id="L30">	}</span>
+
+	/**
+	 * Créé un CellEvent selon les coordonnés données et notifie les observateurs attachés.
+	 * 
+	 * @param row la ligne de la case à jouer
+	 * @param col la colonne de la case à jouer
+	 */
+	public abstract void play(int row, int col);
+
+	/**
+	 * Appelle la méthode {@code update} de la stratégie attribuée, si elle est attribuée.
+	 * 
+	 * &lt;p&gt;Cette méthode est invoquée par {@code Game} lorsqu'un tour a été validé.&lt;/p&gt;
+	 */
+	protected void updateStrategy(ICellEvent event) {
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">		if (this.hasStrategy()) {</span>
+<span class="nc" id="L47">			this.strategy.update(event);</span>
+		}
+<span class="fc" id="L49">	}</span>
+
+	/**
+	 * Indique si une stratégie est attribuée au rôle.
+	 * 
+	 * @return si une stratégie est attribuée au rôle
+	 */
+	public boolean hasStrategy() {
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">		return this.strategy != null;</span>
+	}
+
+	@Override
+<span class="nc" id="L61">	public void update(Subject subj) {}</span>
+
+	@Override
+	public void update(Subject subj, Object data) {
+<span class="pc bpc" id="L65" title="1 of 4 branches missed.">		if (subj instanceof Game &amp;&amp; data instanceof ICellEvent) {</span>
+<span class="fc" id="L66">			this.updateStrategy((ICellEvent) data);</span>
+		}
+<span class="fc" id="L68">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
